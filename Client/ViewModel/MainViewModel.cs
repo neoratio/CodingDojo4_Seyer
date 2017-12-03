@@ -22,13 +22,13 @@ namespace Client.ViewModel
     {
         private Communication.Client clientcom;
         private bool isConnected = false;
-        #region PROPERTIES
+
         public string ChatName { get; set; }
         public string Message { get; set; }
         public ObservableCollection<string> ReceivedMessages { get; set; }
         public RelayCommand ConnectBtnClickCmd { get; set; }
         public RelayCommand SendBtnClickCmd { get; set; }
-        #endregion
+
         public MainViewModel()
         {
             Message = "";
@@ -38,7 +38,7 @@ namespace Client.ViewModel
                 () =>
                 {
                     isConnected = true;
-                    clientcom = new Communication.Client("127.0.0.1", 10100, new Action<string>(NewMessageReceived), ClientDissconnected);
+                    clientcom = new Communication.Client("127.0.0.1", 6666, new Action<string>(NewMessageReceived), ClientDissconnected);
 
                 },
             () =>

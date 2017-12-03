@@ -2,7 +2,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
 
-namespace CodingDojo4_Seyer.ViewModel
+namespace Server.ViewModel
 {
     /// <summary>
     /// This class contains properties that the main View can data bind to.

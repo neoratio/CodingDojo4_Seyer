@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodingDojo4_Seyer.Communication
+namespace Server.Communication
 {
     class Server
     {
