@@ -15,8 +15,8 @@
             <RowDefinition Height="281*"/>
         </Grid.RowDefinitions>
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button Width="60" Margin="5" Content="Start"></Button>
-            <Button Width="60" Margin="5" Content="Stop"></Button>
+            <Button Width="60" Margin="5" Content="Start" Command="{Binding StartBtnClickCmd}"></Button>
+            <Button Width="60" Margin="5" Content="Stop" Command="{Binding StopBtnClickCmd}"></Button>
         </StackPanel>
         <TabControl Grid.Row="1">
             <TabItem Header="Chat" >
@@ -32,20 +32,20 @@
                     <Label Content="Connected Users:" FontWeight="Bold"></Label>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <Label Content="Recived Messages: " FontWeight="Bold"></Label>
-                        <TextBox></TextBox>
+                        <Label Content="{Binding NoOfReceivedMessages}" Margin="5" VerticalAlignment="Center"/>
                     </StackPanel>
 
                     <Border Grid.Row="1" Margin="2">
                         <StackPanel Grid.Row="1" Orientation="Horizontal">
-                            <ListBox Width="200"></ListBox>
-                            <Button Width="40" Margin="5" VerticalAlignment="Bottom" Height="20" Content="Drop"></Button>
+                            <ListBox Width="200" ItemsSource="{Binding Users}" SelectedItem="{Binding SelectedUser}"></ListBox>
+                            <Button Width="40" Margin="5" VerticalAlignment="Bottom" Height="20" Content="Drop" Command="{Binding DropClientBtnClickCmd}"></Button>
                         </StackPanel>
                     </Border>
                     <StackPanel Margin="2" Grid.Row="1" Grid.Column="1" Orientation="Vertical">
                         <Border>
-                        <ListBox Width="245" Height="185"></ListBox>
+                        <ListBox Width="245" Height="185" ItemsSource="{Binding Messages}"></ListBox>
                         </Border>
-                        <Button Width="245" Margin="5" VerticalAlignment="Bottom" Height="20" Content="Save to Log"></Button>
+                        <Button Width="245" Margin="5" VerticalAlignment="Bottom" Height="20" Content="Save to Log" IsEnabled="False"></Button>
                     </StackPanel>
                 </Grid>
             </TabItem>

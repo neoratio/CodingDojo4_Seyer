@@ -49,7 +49,7 @@ namespace CodingDojo4_Seyer.Communication
             {
                 try
                 {
-                    CL.Add(new ClientHandler(SSocket.Accept(), new Action<string, Socket>(NewMessageReceived)));
+                    CL.Add(new ClientHandler(SSocket.Accept(), new Action<string, Socket>(NewChatMessage)));
                 }
                 catch (Exception e)
                 {
@@ -65,7 +65,7 @@ namespace CodingDojo4_Seyer.Communication
             //write message to all clients
             foreach (var item in CL)
             {
-                if (item.Clientsocket != senderSocket)
+                if (item.ClientSocket != senderSocket)
                 {
                     item.Send(message);
                 }

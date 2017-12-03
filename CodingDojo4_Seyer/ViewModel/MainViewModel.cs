@@ -1,4 +1,6 @@
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using System.Collections.ObjectModel;
 
 namespace CodingDojo4_Seyer.ViewModel
 {
@@ -16,19 +18,70 @@ namespace CodingDojo4_Seyer.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
+        private Communication.Server server;
+        private const int port = 10100;
+        private const string ip = "127.0.0.1";
+        private bool isConnected = false;
+
+        public RelayCommand StartBtnClickCmd { get; set; }
+        public RelayCommand StopBtnClickCmd { get; set; }
+        public RelayCommand DropClientBtnClickCmd { get; set; }
+        public RelayCommand SaveToLogBtnClickCmd { get; set; }
+        public ObservableCollection<string> Users { get; set; }
+        public ObservableCollection<string> Messages { get; set; }
+
+        public string SelectedUser { get; set; }
+
+        public int NoOfReceivedMessages
+        {
+            get
+            {
+                return Messages.Count;
+            }
+        }
         public MainViewModel()
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+            Messages = new ObservableCollection<string>();
+            Users = new ObservableCollection<string>();
+
+            StartBtnClickCmd = new RelayCommand(
+                () =>
+                {
+                    server = new Communication.Server(ip, port, UpdateGuiWithNewMessage);
+                    server.StartServer();
+                    isConnected = true;
+                },
+                () => { return !isConnected; });
+
+            StopBtnClickCmd = new RelayCommand(
+                () =>
+                {
+                    server.StopServer();
+                    isConnected = false;
+                },
+                () => { return isConnected; });
+
+            DropClientBtnClickCmd = new RelayCommand(() =>
+            {
+                server.DisconnectClient(SelectedUser);
+                Users.Remove(SelectedUser);
+            },
+                () => { return (SelectedUser != null); });
+
+        }
+        public void UpdateGuiWithNewMessage(string message)
+        {
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                string name = message.Split(':')[0];
+                if (!Users.Contains(name))
+                {
+                    Users.Add(name);
+                }
+                Messages.Add(message);
+                RaisePropertyChanged("NoOfReceivedMessages");
+            });
         }
     }
 }
+     
