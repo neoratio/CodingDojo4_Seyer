@@ -37,9 +37,17 @@ namespace Client.ViewModel
             ConnectBtnClickCmd = new RelayCommand(
                 () =>
                 {
-                    isConnected = true;
-                    clientcom = new Communication.Client("127.0.0.1", 6666, new Action<string>(NewMessageReceived), ClientDissconnected);
+                    if (string.IsNullOrEmpty(ChatName))
+                    {
+                        return;
+                    }
 
+                    SetIsConnected(true);
+                    clientcom = new Communication.Client("127.0.0.1", 6666, new Action<string>(NewMessageReceived), ClientDissconnected);
+                    Message = "connected";
+                    SendBtnClickCmd.Execute(this);
+
+                    RaiseAllCanExecuteChanged();
                 },
             () =>
             {
@@ -65,6 +73,18 @@ namespace Client.ViewModel
             {
                 ReceivedMessages.Add(message);
             });
+        }
+
+        private void SetIsConnected(bool value)
+        {
+            isConnected = value;
+            RaiseAllCanExecuteChanged();
+        }
+
+        private void RaiseAllCanExecuteChanged()
+        {
+            ConnectBtnClickCmd.RaiseCanExecuteChanged();
+            SendBtnClickCmd.RaiseCanExecuteChanged();
         }
     }
 }

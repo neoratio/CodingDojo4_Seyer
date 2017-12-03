@@ -16,10 +16,10 @@ namespace Server.Communication
         Action<string> GU;
         Thread AcceptingTask;
 
-        public Server (String IP, int Port, Action<string> GU)
+        public Server(String IP, int Port, Action<string> GU)
         {
             this.GU = GU;
-            SSocket = new Socket(AddressFamily.InterNetwork,SocketType.Stream, ProtocolType.Tcp);
+            SSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             SSocket.Bind(new IPEndPoint(IPAddress.Parse(IP), Port));
             SSocket.Listen(5);
         }
@@ -34,7 +34,7 @@ namespace Server.Communication
         public void StopServer()
         {
             SSocket.Close();
-            AcceptingTask.Abort(); 
+            AcceptingTask.Abort();
             foreach (var item in CL)
             {
                 item.Close();
@@ -53,16 +53,14 @@ namespace Server.Communication
                 }
                 catch (Exception e)
                 {
-                  
+
                 }
             }
         }
 
         private void NewChatMessage(string message, Socket senderSocket)
         {
-            //update gui
             GU(message);
-            //write message to all clients
             foreach (var item in CL)
             {
                 if (item.ClientSocket != senderSocket)
@@ -71,6 +69,12 @@ namespace Server.Communication
                 }
             }
 
+            string[] msgs = message.Split(':');
+            string msg = msgs.Length > 1 ? msgs[1].TrimStart() : null;
+            if (msg == "@quit")
+            {
+                DisconnectClient(msgs[0]);
+            }
         }
 
         public void DisconnectClient(string name)
@@ -79,8 +83,8 @@ namespace Server.Communication
             {
                 if (item.Name.Equals(name))
                 {
-                    item.Close();
                     CL.Remove(item);
+                    item.Close();
                     break;
                 }
             }

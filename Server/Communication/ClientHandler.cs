@@ -13,10 +13,10 @@ namespace Server.Communication
         private Action<string, Socket> action;
         private byte[] buffer = new byte[512];
         private Thread ClientThread;
-        const string endMessage = "@exit";
+        const string endMessage = "@quit";
 
         public string Name { get; set; }
-        public Socket ClientSocket { get; set;}
+        public Socket ClientSocket { get; set; }
 
         public ClientHandler(Socket socket, Action<string, Socket> action)
         {
@@ -44,7 +44,7 @@ namespace Server.Communication
 
         public void Close()
         {
-            Send(endMessage); 
+            Send(endMessage);
             ClientSocket.Close(1);
             ClientThread.Abort();
         }

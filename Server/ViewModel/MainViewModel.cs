@@ -1,6 +1,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
+using System;
 
 namespace Server.ViewModel
 {
@@ -30,7 +31,24 @@ namespace Server.ViewModel
         public ObservableCollection<string> Users { get; set; }
         public ObservableCollection<string> Messages { get; set; }
 
-        public string SelectedUser { get; set; }
+        private string selectedUser;
+        public string SelectedUser
+        {
+            get
+            {
+                return selectedUser;
+            }
+            set
+            {
+                if (selectedUser == value)
+                {
+                    return;
+                }
+
+                selectedUser = value;
+                RaiseAllCanExecuteChanged();
+            }
+        }
 
         public int NoOfReceivedMessages
         {
@@ -49,7 +67,7 @@ namespace Server.ViewModel
                 {
                     server = new Communication.Server(ip, port, UpdateGuiWithNewMessage);
                     server.StartServer();
-                    isConnected = true;
+                    SetIsConnected(true);
                 },
                 () => { return !isConnected; });
 
@@ -57,7 +75,7 @@ namespace Server.ViewModel
                 () =>
                 {
                     server.StopServer();
-                    isConnected = false;
+                    SetIsConnected(false);
                 },
                 () => { return isConnected; });
 
@@ -69,11 +87,22 @@ namespace Server.ViewModel
                 () => { return (SelectedUser != null); });
 
         }
+
         public void UpdateGuiWithNewMessage(string message)
         {
             App.Current.Dispatcher.Invoke(() =>
             {
                 string name = message.Split(':')[0];
+                string[] msgs = message.Split(':');
+                string msg = msgs.Length > 1 ? msgs[1].TrimStart() : null;
+
+                if (msg == "@quit")
+                {
+                    Users.Remove(name);
+                    message = string.Format("{0} disconnected.", name);
+                    return;
+                }
+
                 if (!Users.Contains(name))
                 {
                     Users.Add(name);
@@ -82,6 +111,18 @@ namespace Server.ViewModel
                 RaisePropertyChanged("NoOfReceivedMessages");
             });
         }
+
+        private void SetIsConnected(bool value)
+        {
+            isConnected = value;
+            RaiseAllCanExecuteChanged();
+        }
+
+        private void RaiseAllCanExecuteChanged()
+        {
+            StartBtnClickCmd.RaiseCanExecuteChanged();
+            StopBtnClickCmd.RaiseCanExecuteChanged();
+            DropClientBtnClickCmd.RaiseCanExecuteChanged();
+        }
     }
 }
-     
