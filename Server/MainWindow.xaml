@@ -5,8 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Server"
         xmlns:ViewModel="clr-namespace:Server.ViewModel"
+        x:Class="Server.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
+
+
+    <Window.DataContext>
+        <ViewModel:MainViewModel/>
+    </Window.DataContext>
 
 
     <Grid>
