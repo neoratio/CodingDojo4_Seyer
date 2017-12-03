@@ -1,4 +1,8 @@
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace Client.ViewModel
 {
@@ -16,19 +20,51 @@ namespace Client.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
+        private Communication.Client clientcom;
+        private bool isConnected = false;
+        #region PROPERTIES
+        public string ChatName { get; set; }
+        public string Message { get; set; }
+        public ObservableCollection<string> ReceivedMessages { get; set; }
+        public RelayCommand ConnectBtnClickCmd { get; set; }
+        public RelayCommand SendBtnClickCmd { get; set; }
+        #endregion
         public MainViewModel()
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+            Message = "";
+            ReceivedMessages = new ObservableCollection<string>();
+
+            ConnectBtnClickCmd = new RelayCommand(
+                () =>
+                {
+                    isConnected = true;
+                    clientcom = new Communication.Client("127.0.0.1", 10100, new Action<string>(NewMessageReceived), ClientDissconnected);
+
+                },
+            () =>
+            {
+                return (!isConnected);
+            });
+
+            SendBtnClickCmd = new RelayCommand(
+                () => {
+                    clientcom.Send(ChatName + ": " + Message);
+                    ReceivedMessages.Add("YOU: " + Message);
+                }, () => { return (isConnected && Message.Length >= 1); });
+        }
+
+        private void ClientDissconnected()
+        {
+            isConnected = false;
+            CommandManager.InvalidateRequerySuggested();
+        }
+
+        private void NewMessageReceived(string message)
+        {
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                ReceivedMessages.Add(message);
+            });
         }
     }
 }

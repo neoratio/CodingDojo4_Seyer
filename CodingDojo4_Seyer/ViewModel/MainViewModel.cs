@@ -19,7 +19,7 @@ namespace CodingDojo4_Seyer.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private Communication.Server server;
-        private const int port = 10100;
+        private const int port = 6666;
         private const string ip = "127.0.0.1";
         private bool isConnected = false;
 

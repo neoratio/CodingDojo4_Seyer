@@ -32,7 +32,7 @@
                     <Label Content="Connected Users:" FontWeight="Bold"></Label>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <Label Content="Recived Messages: " FontWeight="Bold"></Label>
-                        <Label Content="{Binding NoOfReceivedMessages}" Margin="5" VerticalAlignment="Center"/>
+                        <Label Content="{Binding NoOfReceivedMessages}" />
                     </StackPanel>
 
                     <Border Grid.Row="1" Margin="2">
