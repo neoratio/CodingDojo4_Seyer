@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingDojo4_Seyer", "CodingDojo4_Seyer\CodingDojo4_Seyer.csproj", "{B7926768-5C07-4025-9E2C-F27FFA005040}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "CodingDojo4_Seyer\Server.csproj", "{B7926768-5C07-4025-9E2C-F27FFA005040}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{53CB8239-8D07-4168-935E-16A2A8209998}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B7926768-5C07-4025-9E2C-F27FFA005040}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7926768-5C07-4025-9E2C-F27FFA005040}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7926768-5C07-4025-9E2C-F27FFA005040}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53CB8239-8D07-4168-935E-16A2A8209998}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53CB8239-8D07-4168-935E-16A2A8209998}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53CB8239-8D07-4168-935E-16A2A8209998}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53CB8239-8D07-4168-935E-16A2A8209998}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
